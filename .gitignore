@@ -5,3 +5,5 @@ backend/.venv/
 backend/.env
 .vercel/
 .DS_Store
+.vercel
+.env*

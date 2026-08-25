@@ -24,7 +24,10 @@ from app.config import ANTHROPIC_API_KEY, CASES_DIR, REPO_ROOT, REPORT_MODEL
 from app.models import Case
 
 DRAFTS_DIR = REPO_ROOT / "data" / "cases" / "_drafts"
-DRAFTS_DIR.mkdir(parents=True, exist_ok=True)
+try:
+    DRAFTS_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    pass  # 서버리스 배포(Vercel) 환경은 파일시스템이 읽기 전용 — 이 관리자용 초안 생성 기능은 로컬 전용
 
 KNOWLEDGE_DIR = REPO_ROOT / "data" / "knowledge"
 
