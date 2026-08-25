@@ -1,0 +1,278 @@
+{
+  "case_id": "BUNYANG_005",
+  "title": "임대수익 보장형 분양",
+  "domain": "BUNYANG",
+  "difficulty": 4,
+  "time_limit_seconds": null,
+  "initial_points": 1400,
+  "scenario": {
+    "description": "분양가 3억 원, 월 180만 원 임대수익을 보장한다는 오피스텔 분양 상담을 받았다.",
+    "property": {
+      "location": "지방 광역시 신축 오피스텔 분양",
+      "price_description": "분양가 3억 원 / 월 180만 원 임대수익 보장",
+      "details": {}
+    },
+    "broker_line": "고객님~ 저희 상품은 수익보장이 쭉 이어지니까 정말 안심하고 투자하셔도 돼요! 이런 조건 요즘 찾기 힘듭니다, 진짜예요.",
+    "speaker_label": "분양상담사",
+    "goal": "이 분양 계약을 진행해도 되는지 판단하십시오."
+  },
+  "documents": [
+    {
+      "document_id": "DOC_DEVELOPER",
+      "title": "시행사 정보",
+      "blocks": [
+        {
+          "block_id": "DEV_01",
+          "text": "시행사 등록 확인 — 법인 설립 2018년(8년차), 사업자등록번호 정상 확인됨. 과거 준공 실적 3건 (2020, 2022, 2024년 각 1건, 모두 사용승인 완료)",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "DEV_02",
+          "text": "최근 3년간 시행사 관련 민사소송·분쟁 이력 조회 결과 특이사항 없음",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_BUILDER",
+      "title": "시공사 정보",
+      "blocks": [
+        {
+          "block_id": "BLD_01",
+          "text": "시공사 시공능력평가 순위 30위권 중견 건설사 (국토교통부 2026년 발표 기준). 이 사업장에 대한 계약이행보증(공사이행보증) 가입 확인됨, 보증기관: ○○건설공제조합",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "BLD_02",
+          "text": "최근 5년간 시공한 현장 12곳 중 준공 지연 사례 1건 (2023년, 사유: 인허가 지연)",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_YIELD",
+      "title": "수익보장 관련 자료",
+      "blocks": [
+        {
+          "block_id": "YLD_01",
+          "text": "임대수익보장 계약 구조 — 분양대금과 별도로 수익보장금을 관리계좌(신탁계좌)에 예치하고, 위탁관리계약을 통해 매월 집행. 관리사: ○○자산관리(주)",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "YLD_02",
+          "text": "수익보장 조건 상세 — 월 180만원(연 7.2% 수익률 환산) 보장 기간은 분양계약일로부터 3년. 3년 경과 후에는 실제 임대차 시장 시세에 연동되며, 공실 발생 시 수익보장 대상에서 제외됨",
+          "evidence_pattern": "LIMITED_GUARANTEE_PERIOD"
+        },
+        {
+          "block_id": "YLD_03",
+          "text": "현재까지(분양 개시 후 2개월) 계약자 148세대 중 132세대 계약 완료, 잔여 16세대",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_LAND",
+      "title": "토지/건축 관련 정보",
+      "blocks": [
+        {
+          "block_id": "LND_01",
+          "text": "건축 인허가 정상 완료 확인 (건축허가번호 2024-건축-0231호, 관할 ○○시청). 분양보증 보험 가입 확인됨 — 보증기관: 주택도시보증공사(HUG), 보증서번호 HUG-2025-04-1122",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "LND_02",
+          "text": "토지사용승낙서 및 소유권 확인 완료, 저당권 등 제한물권 설정 없음",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_CONTRACT",
+      "title": "계약서",
+      "blocks": [
+        {
+          "block_id": "CTR_01",
+          "text": "특약사항 제7조: '임대수익보장은 소유권이전등기일로부터 만 3년간 적용하며, 이후에는 실거래 임대차 시세에 따르고 이때 발생하는 공실 리스크는 매수인이 부담한다.'",
+          "evidence_pattern": "LIMITED_GUARANTEE_PERIOD"
+        },
+        {
+          "block_id": "CTR_02",
+          "text": "특약사항 제9조: 관리비 및 수선충당금은 별도 정산하며 매수인이 부담한다.",
+          "evidence_pattern": null
+        }
+      ]
+    }
+  ],
+  "hidden_truth": {
+    "fraud_type": "NONE_LIMITED_RISK",
+    "risk_patterns": [
+      "LIMITED_GUARANTEE_PERIOD"
+    ],
+    "required_evidence": [
+      "LIMITED_GUARANTEE_PERIOD"
+    ],
+    "explanation": "이 사례는 위험 신호가 있었지만 치명적인 사기는 아니었습니다. 인허가와 분양보증은 정상이었고, 유일하게 주의할 부분은 수익보장 기간이 3년으로 제한되어 있다는 점이었습니다. 이 조건을 정확히 이해하고 진행했다면 합리적인 선택일 수 있습니다 — 모든 위험 신호가 곧 사기를 의미하지는 않습니다."
+  },
+  "evidence_definitions": [
+    {
+      "pattern": "LIMITED_GUARANTEE_PERIOD",
+      "importance": 2,
+      "description": "임대수익 보장 기간이 3년으로 제한되어 있어 이후 공실 위험을 매수인이 부담할 수 있음"
+    }
+  ],
+  "investigations": [
+    {
+      "investigation_id": "CHECK_DEVELOPER",
+      "name": "시행사 정보 확인",
+      "cost": 200,
+      "time_cost": 60,
+      "unlock_condition": null,
+      "document_id": "DOC_DEVELOPER"
+    },
+    {
+      "investigation_id": "CHECK_BUILDER",
+      "name": "시공사 정보 확인",
+      "cost": 200,
+      "time_cost": 60,
+      "unlock_condition": null,
+      "document_id": "DOC_BUILDER"
+    },
+    {
+      "investigation_id": "CHECK_YIELD",
+      "name": "수익보장 자료 확인",
+      "cost": 400,
+      "time_cost": 120,
+      "unlock_condition": null,
+      "document_id": "DOC_YIELD"
+    },
+    {
+      "investigation_id": "CHECK_LAND",
+      "name": "토지/건축 정보 확인",
+      "cost": 300,
+      "time_cost": 90,
+      "unlock_condition": null,
+      "document_id": "DOC_LAND"
+    },
+    {
+      "investigation_id": "CHECK_CONTRACT",
+      "name": "계약서 확인",
+      "cost": 300,
+      "time_cost": 90,
+      "unlock_condition": {
+        "requires_investigation": "CHECK_YIELD"
+      },
+      "document_id": "DOC_CONTRACT"
+    }
+  ],
+  "npc_personas": [
+    {
+      "npc_id": "NPC_01",
+      "role": "presale_agent",
+      "display_name": "분양상담사 최상담",
+      "knowledge": [
+        "yield_guarantee",
+        "developer_info",
+        "permit_status"
+      ],
+      "strategies": [
+        "SAFETY_CLAIM",
+        "AUTHORITY"
+      ],
+      "pressure_level": 1,
+      "hidden_information": [
+        "guarantee_period_is_limited"
+      ],
+      "system_prompt": "당신은 부동산 분양 상담 시뮬레이션의 등장인물이다.\n\nROLE: 분양상담사 최상담\n말투: 활기차고 적극적인 세일즈 화법. 감탄사와 강조 표현('진짜', '정말', '완전')을 자주 쓰며 텐션이 높다.\n\n다음 사실만 알고 있고 이 범위 밖의 새로운 사실을 만들지 않는다:\n- 분양가 3억 원, 월 180만 원 임대수익 보장.\n- 실제 계약서상 수익보장 기간은 3년이며 이후 시세에 연동된다.\n- 인허가와 분양보증은 모두 정상적으로 완료되어 있다.\n\nSAFETY_CLAIM(수익보장을 과장), AUTHORITY(시행사/시공사의 신뢰도 강조) 전략 범위 안에서만 행동한다. 수익보장이 3년 한정이라는 사실을 스스로 먼저 정확히 밝히지 않고, '평생', '계속' 같은 모호한 표현을 쓸 수 있다. 인허가나 분양보증 등 실제로 정상인 사실에 대해서는 있는 그대로 정직하게 답한다.\n\n이 게임의 정답이나 메타 발언을 하지 않는다. 항상 극중 인물로만 대답한다.",
+      "statements": [
+        {
+          "statement_id": "S01",
+          "text": "수익보장은 평생 지속됩니다.",
+          "reveal_keywords": [
+            "수익",
+            "보장",
+            "임대수익",
+            "180만",
+            "월세",
+            "기간",
+            "언제까지",
+            "몇 년",
+            "몇년",
+            "공실"
+          ]
+        },
+        {
+          "statement_id": "S02",
+          "text": "이 프로젝트는 인허가와 분양보증 모두 정상입니다.",
+          "reveal_keywords": [
+            "인허가",
+            "허가",
+            "분양보증",
+            "보증",
+            "시행사",
+            "시공사",
+            "안전",
+            "믿을",
+            "정상"
+          ]
+        }
+      ],
+      "suggested_questions": [
+        "수익보장은 언제까지 되나요?",
+        "인허가랑 분양보증은 문제없나요?",
+        "공실이 나면 어떻게 되나요?"
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "contradiction_id": "C01",
+      "left": "S01",
+      "right": "LIMITED_GUARANTEE_PERIOD",
+      "score": 10,
+      "explanation": "계약서상 수익보장 기간은 3년으로 한정되어 있는데, 상담사는 '평생 지속된다'고 설명하여 실제 계약 조건과 모순된다."
+    }
+  ],
+  "safe_actions": [
+    {
+      "action_id": "STOP_TEMPORARILY",
+      "description": "일단 계약을 보류한다"
+    },
+    {
+      "action_id": "CHECK_DEVELOPER",
+      "description": "시행사 이력을 확인한다"
+    },
+    {
+      "action_id": "CHECK_GUARANTEE_PERIOD",
+      "description": "수익보장 기간을 확인한다"
+    },
+    {
+      "action_id": "CHECK_PERMITS",
+      "description": "인허가 및 분양보증 여부를 확인한다"
+    }
+  ],
+  "ending_options": [
+    {
+      "decision": "SAFE_TO_PROCEED",
+      "score": 15,
+      "comment": "인허가·분양보증이 정상이고 수익보장 기간(3년)을 정확히 이해했다면 진행할 수 있는 사안입니다."
+    },
+    {
+      "decision": "NEED_MORE_VERIFICATION",
+      "score": 13,
+      "comment": "수익보장 기간 이후의 임대 전망을 조금 더 확인해보는 것도 신중한 선택입니다."
+    },
+    {
+      "decision": "STOP_CONTRACT",
+      "score": 5,
+      "comment": "치명적인 위험 신호가 없는 상황에서 계약을 완전히 중단하는 것은 다소 과도한 선택일 수 있습니다."
+    }
+  ],
+  "source": {
+    "case_ids": [
+      "REAL_CASE_YIELD_GUARANTEE_014"
+    ],
+    "official_sources": [
+      "https://www.gov.kr 분양 계약 시 유의사항 안내"
+    ]
+  }
+}

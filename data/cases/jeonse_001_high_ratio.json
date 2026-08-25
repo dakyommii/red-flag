@@ -1,0 +1,198 @@
+{
+  "case_id": "JEONSE_001",
+  "title": "위험한 전세가율",
+  "domain": "JEONSE",
+  "difficulty": 1,
+  "time_limit_seconds": null,
+  "initial_points": 800,
+  "scenario": {
+    "description": "서울 △△구의 신축 풀옵션 오피스텔. 시세보다 조금 비싸 보이지만 중개사는 문제없다고 한다.",
+    "property": {
+      "location": "서울 △△구 신축 오피스텔",
+      "price_description": "전세금 2억 3천만 원",
+      "details": {}
+    },
+    "broker_line": "어머, 이 매물 진짜 잘 나온 거예요. 시세보다 저렴하게 나와서 지금 안 잡으시면 금방 나갑니다~",
+    "speaker_label": "중개사",
+    "goal": "이 계약을 진행해도 되는지 판단하십시오."
+  },
+  "documents": [
+    {
+      "document_id": "DOC_LISTING",
+      "title": "매물 광고",
+      "blocks": [
+        {
+          "block_id": "LST_00",
+          "text": "🏢 서울 △△구 신축 풀옵션 오피스텔 전세 매물 / 전용 24㎡, 방1 화장실1 / 냉장고·세탁기·에어컨·붙박이장 완비 / 즉시 입주 가능",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "LST_01",
+          "text": "전세금 2억 3,000만원 (융자 없음 표기)",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "LST_02",
+          "text": "매물 설명 추가 문구: '문의 많은 매물입니다. 지금 계약 안 하시면 바로 다른 분과 계약 진행됩니다. 오늘 안에 결정 부탁드려요!'",
+          "evidence_pattern": "URGENCY"
+        },
+        {
+          "block_id": "LST_03",
+          "text": "게시일 2026.02.10 / 조회수 312 / 찜하기 47",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_MARKET",
+      "title": "시세 정보",
+      "blocks": [
+        {
+          "block_id": "MKT_01",
+          "text": "국토교통부 실거래가 공개시스템 조회 결과 — 동일 단지·동일 평형 최근 6개월 전세 실거래 평균 2억 2,000만원 (2025.09~2026.02, 총 7건 거래)",
+          "evidence_pattern": "HIGH_JEONSE_RATIO"
+        },
+        {
+          "block_id": "MKT_02",
+          "text": "매매가 대비 전세가율 참고자료: 해당 단지 평균 전세가율 68% (국토부 통계 기준)",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "MKT_03",
+          "text": "동일 단지 최근 매매 실거래가 평균 3억 2,000만원 (2025.11 기준)",
+          "evidence_pattern": null
+        }
+      ]
+    }
+  ],
+  "hidden_truth": {
+    "fraud_type": "HIGH_JEONSE_RATIO_RISK",
+    "risk_patterns": [
+      "HIGH_JEONSE_RATIO",
+      "URGENCY"
+    ],
+    "required_evidence": [
+      "HIGH_JEONSE_RATIO"
+    ],
+    "explanation": "이 매물은 전세금이 주변 시세보다 높게 책정된, 이른바 '깡통전세' 위험이 있는 사례입니다. 전세가율이 높을수록 매매가가 하락하거나 집이 경매로 넘어갈 경우 보증금을 온전히 돌려받지 못할 가능성이 커집니다."
+  },
+  "evidence_definitions": [
+    {
+      "pattern": "HIGH_JEONSE_RATIO",
+      "importance": 2,
+      "description": "전세금이 주변 실거래가보다 높음 (전세가율 과다)"
+    },
+    {
+      "pattern": "URGENCY",
+      "importance": 1,
+      "description": "계약을 서두르도록 압박함"
+    }
+  ],
+  "investigations": [
+    {
+      "investigation_id": "CHECK_LISTING",
+      "name": "매물 광고 확인",
+      "cost": 100,
+      "time_cost": 30,
+      "unlock_condition": null,
+      "document_id": "DOC_LISTING"
+    },
+    {
+      "investigation_id": "CHECK_MARKET",
+      "name": "시세 정보 확인",
+      "cost": 300,
+      "time_cost": 90,
+      "unlock_condition": null,
+      "document_id": "DOC_MARKET"
+    }
+  ],
+  "npc_personas": [
+    {
+      "npc_id": "NPC_01",
+      "role": "real_estate_agent",
+      "display_name": "공인중개사 박중개",
+      "knowledge": [
+        "property_information",
+        "market_price"
+      ],
+      "strategies": [
+        "SAFETY_CLAIM",
+        "URGENCY"
+      ],
+      "pressure_level": 1,
+      "hidden_information": [],
+      "system_prompt": "당신은 부동산 계약 시뮬레이션의 등장인물이다.\n\nROLE: 공인중개사 박중개\n말투: 친근하고 살짝 수다스러운 존댓말. '~예요', '~거든요' 같은 구어체를 자주 쓰고 밝고 가벼운 톤을 유지한다.\n\n다음 사실만 알고 있고 이 범위 밖의 새로운 사실을 만들지 않는다:\n- 매물: 서울 △△구 신축 오피스텔, 전세금 2억 3천만 원\n- 주변 6개월 평균 전세 실거래가는 약 2억 2천만 원이다 (매물이 시세보다 다소 높음).\n\n사용자가 질문하면 실제 중개사처럼 자연스럽게 대답한다. SAFETY_CLAIM(안전하다는 강조), URGENCY(빨리 계약하지 않으면 놓친다는 압박) 전략 범위 안에서만 행동한다. 시세보다 비싸다는 사실을 스스로 먼저 인정하지 않는다.\n\n이 게임의 정답(fraud_type)이나 메타 발언을 하지 않는다. 항상 극중 인물로만 대답한다.",
+      "statements": [
+        {
+          "statement_id": "S01",
+          "text": "이 전세금은 주변 시세보다 저렴하게 나온 겁니다.",
+          "reveal_keywords": [
+            "시세",
+            "전세금",
+            "가격",
+            "비싼",
+            "비싸",
+            "저렴",
+            "얼마",
+            "주변",
+            "실거래",
+            "전세가율"
+          ]
+        }
+      ],
+      "suggested_questions": [
+        "주변 시세는 어느 정도인가요?",
+        "왜 이 가격에 나온 건가요?",
+        "지금 바로 계약해야 하나요?"
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "contradiction_id": "C01",
+      "left": "S01",
+      "right": "HIGH_JEONSE_RATIO",
+      "score": 12,
+      "explanation": "주변 6개월 평균 실거래가(약 2억 2천만 원)보다 이 매물의 전세금(2억 3천만 원)이 더 높다. '시세보다 저렴하다'는 설명은 실거래가 정보와 모순된다."
+    }
+  ],
+  "safe_actions": [
+    {
+      "action_id": "STOP_TEMPORARILY",
+      "description": "일단 계약을 보류한다"
+    },
+    {
+      "action_id": "CHECK_MARKET_PRICE",
+      "description": "시세를 확인한다"
+    },
+    {
+      "action_id": "COMPARE_JEONSE_RATIO",
+      "description": "전세가율을 계산해본다"
+    }
+  ],
+  "ending_options": [
+    {
+      "decision": "SAFE_TO_PROCEED",
+      "score": 6,
+      "comment": "시세보다 높은 전세금을 그대로 진행하는 것은 위험할 수 있습니다."
+    },
+    {
+      "decision": "NEED_MORE_VERIFICATION",
+      "score": 14,
+      "comment": "정확한 시세와 보증보험 가입 가능 여부를 더 확인한 뒤 진행하는 것이 안전합니다."
+    },
+    {
+      "decision": "STOP_CONTRACT",
+      "score": 10,
+      "comment": "전세가율이 부담스럽다면 계약을 중단하는 것도 안전한 선택입니다."
+    }
+  ],
+  "source": {
+    "case_ids": [
+      "REAL_CASE_JEONSE_RATIO_004"
+    ],
+    "official_sources": [
+      "https://www.gov.kr 전세사기 예방 안내"
+    ]
+  }
+}

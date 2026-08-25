@@ -1,0 +1,807 @@
+:root {
+  color-scheme: dark;
+
+  /* 사건 파일(case dossier) 팔레트 — 따뜻한 차콜 베이스 + 위험 신호 레드 */
+  --bg: #0f1013;
+  --bg-grain: #14161b;
+  --panel: #191b21;
+  --panel-2: #20232b;
+  --panel-3: #272b34;
+  --border: #2e3240;
+  --border-strong: #3d4354;
+
+  --text: #eceef3;
+  --muted: #949aa8;
+  --faint: #6b7180;
+
+  --accent: #e5484d;
+  --accent-soft: rgba(229, 72, 77, 0.12);
+  --accent-dim: #b93b3f;
+
+  --info: #5b8def;
+  --info-soft: rgba(91, 141, 239, 0.12);
+
+  --danger: #e5484d;
+  --safe: #3fb96f;
+  --safe-soft: rgba(63, 185, 111, 0.12);
+  --warn: #e8a33d;
+  --warn-soft: rgba(232, 163, 61, 0.12);
+
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  font-feature-settings: "tnum";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, var(--bg-grain), transparent 70%),
+    var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+.page > h1 {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card + .card {
+  margin-top: 16px;
+}
+
+.card h3 {
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--panel-2);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  font-size: 14px;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--panel-3);
+  border-color: var(--faint);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:focus-visible {
+  outline: 2px solid var(--info);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+button.primary:hover:not(:disabled) {
+  background: var(--accent-dim);
+  border-color: var(--accent-dim);
+}
+
+button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 11px 13px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s ease;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--info);
+}
+
+h1, h2, h3 {
+  margin: 0 0 8px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 5px;
+  border: 1px solid var(--border-strong);
+  background: var(--panel-2);
+  color: var(--muted);
+}
+
+.badge.risk {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.badge.safe {
+  border-color: var(--safe);
+  color: var(--safe);
+}
+
+.grid-cases {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* 그리드 안에서는 카드 간 세로 마진을 gap이 담당한다 */
+.grid-cases .card + .card,
+.decision-options .card + .card {
+  margin-top: 0;
+}
+
+/* CASE 카드 — 사건 파일 느낌: 좌측 레드 스트립 + 호버 시 살짝 떠오름 */
+.grid-cases .card {
+  position: relative;
+  overflow: hidden;
+  padding-left: 22px;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.grid-cases .card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(var(--accent), var(--accent-dim));
+  opacity: 0.75;
+}
+
+.grid-cases .card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.grid-cases .card h3 {
+  font-size: 17px;
+  margin-top: 12px;
+}
+
+.difficulty {
+  letter-spacing: 2px;
+  color: var(--warn);
+  font-size: 13px;
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(var(--panel), var(--panel-2));
+  margin-bottom: 20px;
+  font-variant-numeric: tabular-nums;
+  box-shadow: var(--shadow-sm);
+}
+
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+}
+
+.hud-stat-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.hud-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.investigation-layout {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  gap: 16px;
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-item {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 13px;
+}
+
+.menu-item.active {
+  border-color: var(--info);
+  background: var(--info-soft);
+}
+
+/* 문서 본문 — 증거 후보로 집어들 수 있는 조각 */
+.block-item {
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  line-height: 1.55;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.block-item:hover {
+  border-color: var(--border-strong);
+  border-left-color: var(--warn);
+  background: var(--panel-2);
+}
+
+.block-item.registered {
+  border-color: var(--safe);
+  border-left-color: var(--safe);
+  background: var(--safe-soft);
+  cursor: default;
+}
+
+.evidence-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 7px 12px;
+  margin: 4px 6px 4px 0;
+  font-size: 13px;
+  background: var(--panel-2);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.evidence-chip:hover {
+  border-color: var(--faint);
+}
+
+.evidence-chip.selected {
+  border-color: var(--info);
+  background: var(--info-soft);
+  color: var(--text);
+}
+
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.chat-bubble {
+  padding: 10px 14px;
+  border-radius: 10px;
+  max-width: 80%;
+}
+
+.chat-bubble.player {
+  align-self: flex-end;
+  background: var(--info);
+  color: #fff;
+}
+
+.chat-bubble.npc {
+  align-self: flex-start;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+}
+
+.notice-banner {
+  background: var(--accent-soft);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.document-empty {
+  text-align: center;
+  padding: 36px 20px;
+  border-style: dashed;
+}
+
+.document-empty-icon {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+/* 예시 질문 — 클릭하면 입력창에 채워져 플레이어가 수정해 보낼 수 있다 */
+.suggested-questions {
+  margin-top: 10px;
+}
+
+.suggested-question-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.suggested-question {
+  font-size: 12.5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px dashed var(--border-strong);
+  background: transparent;
+  color: var(--muted);
+}
+
+.suggested-question:hover:not(:disabled) {
+  border-style: solid;
+  border-color: var(--info);
+  background: var(--info-soft);
+  color: var(--text);
+}
+
+@keyframes reveal-pop {
+  0% {
+    box-shadow: 0 0 0 0 rgba(91, 141, 239, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgba(91, 141, 239, 0);
+  }
+}
+
+.evidence-chip.just-revealed {
+  border-color: var(--info);
+  animation: reveal-pop 1.2s ease-out 2;
+}
+
+.statement-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tab-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.decision-options {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.score-bar {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--panel-3);
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.score-bar > div {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--info);
+  transition: width 0.5s ease;
+}
+
+.score-bar.high > div {
+  background: var(--safe);
+}
+
+.score-bar.mid > div {
+  background: var(--warn);
+}
+
+.score-bar.low > div {
+  background: var(--danger);
+}
+
+/* 판정 도장 */
+.verdict-stamp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  transform: rotate(-8deg);
+  flex-shrink: 0;
+}
+
+.verdict-stamp.grade-A {
+  color: var(--safe);
+}
+
+.verdict-stamp.grade-B {
+  color: var(--info);
+}
+
+.verdict-stamp.grade-C {
+  color: var(--warn);
+}
+
+.verdict-stamp.grade-D {
+  color: var(--danger);
+}
+
+.risk-item {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.risk-item:last-child {
+  border-bottom: none;
+}
+
+.risk-item-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.risk-item-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+.play-guide {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.play-guide-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.play-guide-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.play-guide-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.play-guide-label {
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.play-guide-arrow {
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.notebook-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.notebook-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.notebook-checkbox {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.notebook-step.done .notebook-checkbox {
+  border-color: var(--safe);
+  background: var(--safe);
+  color: #0b1a12;
+  font-weight: 700;
+}
+
+.notebook-label {
+  font-size: 14px;
+}
+
+.notebook-step.done .notebook-label {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.notebook-hint {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.notebook-final.ready .notebook-checkbox {
+  border-color: var(--safe);
+  background: var(--safe);
+  color: #0b1a12;
+}
+
+.notebook-final.ready .notebook-label {
+  color: var(--safe);
+  font-weight: 600;
+}
+
+.character-speech {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.character-avatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.speech-bubble-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.speech-bubble-name {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  margin-left: 4px;
+}
+
+.speech-bubble {
+  position: relative;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px 14px 14px 14px;
+  padding: 12px 16px;
+  line-height: 1.5;
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -7px;
+  width: 12px;
+  height: 12px;
+  background: var(--panel-2);
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+.contradiction-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.contradiction-link.small {
+  gap: 8px;
+  margin-top: 0;
+}
+
+.link-slot {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  min-height: 20px;
+}
+
+.link-slot.filled {
+  border-style: solid;
+  border-color: var(--info);
+  background: var(--info-soft);
+  color: var(--text);
+}
+
+.link-arrow {
+  color: var(--info);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.found-contradiction {
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+/* 행동 Timeline — 세로로 이어진 플로우차트 */
+.flow-timeline {
+  position: relative;
+  padding-left: 36px;
+  margin-top: 4px;
+}
+
+.flow-timeline::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--border-strong);
+}
+
+.flow-step {
+  position: relative;
+  padding-bottom: 22px;
+}
+
+.flow-step:last-child {
+  padding-bottom: 0;
+}
+
+.flow-node {
+  position: absolute;
+  left: -36px;
+  top: -2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border: 2px solid var(--border-strong);
+  background: var(--panel-2);
+  z-index: 1;
+}
+
+.flow-node.kind-investigate,
+.flow-node.kind-chat,
+.flow-node.kind-statement {
+  border-color: var(--info);
+  background: var(--info-soft);
+}
+
+.flow-node.kind-evidence {
+  border-color: var(--safe);
+  background: var(--safe-soft);
+}
+
+.flow-node.kind-contradiction {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.flow-node.kind-decision {
+  border-color: var(--safe);
+  background: var(--safe-soft);
+}
+
+.flow-content {
+  padding-top: 3px;
+}
+
+.flow-ts {
+  font-size: 11px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.flow-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.flow-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.5;
+}

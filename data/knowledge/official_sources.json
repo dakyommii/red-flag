@@ -1,0 +1,6 @@
+[
+  { "name": "정부24 전세사기 예방 안내", "url": "https://www.gov.kr", "note": "전세계약 전 확인해야 할 서류와 절차에 대한 공식 안내" },
+  { "name": "청약Home", "url": "https://www.applyhome.co.kr", "note": "청약/특별공급 당첨자 공식 통지 및 조회 채널" },
+  { "name": "HUG 안심전세포털", "url": "https://www.khug.or.kr", "note": "전세보증금 반환보증 및 임대인 정보 확인" },
+  { "name": "국토교통부 실거래가 공개시스템", "url": "https://rt.molit.go.kr", "note": "주변 시세 및 실거래가 조회" }
+]

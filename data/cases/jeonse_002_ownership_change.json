@@ -1,0 +1,256 @@
+{
+  "case_id": "JEONSE_002",
+  "title": "여러 채를 가진 임대인",
+  "domain": "JEONSE",
+  "difficulty": 2,
+  "time_limit_seconds": null,
+  "initial_points": 1200,
+  "scenario": {
+    "description": "경기 □□시 신축 빌라. 집주인이 최근 여러 채를 매입했다는 이야기를 들었다.",
+    "property": {
+      "location": "경기 □□시 신축 빌라",
+      "price_description": "전세금 2억 원",
+      "details": {}
+    },
+    "broker_line": "제가 이 동네에서만 15년 넘게 중개했는데요, 집주인분이 여러 채 갖고 계셔도 그 정도 자금력이면 전혀 문제없습니다. 걱정 붙들어 매세요.",
+    "speaker_label": "중개사",
+    "goal": "이 계약을 진행해도 되는지 판단하십시오."
+  },
+  "documents": [
+    {
+      "document_id": "DOC_REGISTRY",
+      "title": "등기 정보",
+      "blocks": [
+        {
+          "block_id": "REG_00",
+          "text": "고유번호 1234-2026-004511 / 소재지: 경기 □□시 □□동 456, ○○빌라 302호 / 전용면적 38.5㎡",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "REG_01",
+          "text": "【갑구】 순위 2번 소유권이전 2026.01.10 접수 제55201호, 등기원인: 2026.01.05 매매, 소유자: D (전 소유자 C로부터 이전)",
+          "evidence_pattern": "RECENT_OWNERSHIP_CHANGE"
+        },
+        {
+          "block_id": "REG_02",
+          "text": "소유자 D 명의 부동산 추가 조회 — 최근 3개월간 인근 단지 오피스텔 5채를 순차 매입 (2025.11~2026.01, 등기부 각 건 확인됨)",
+          "evidence_pattern": "MULTIPLE_PROPERTY_ACQUISITION"
+        },
+        {
+          "block_id": "REG_03",
+          "text": "【을구】 근저당권 설정 등기 없음 (해당 사항 없음)",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_MARKET",
+      "title": "시세 정보",
+      "blocks": [
+        {
+          "block_id": "MKT_01",
+          "text": "국토교통부 실거래가 공개시스템 — 동일 단지 최근 6개월 평균 전세 실거래가 1억 8,000만원 (본 매물 호가 2억원, 시세 대비 약 111%)",
+          "evidence_pattern": "HIGH_JEONSE_RATIO"
+        },
+        {
+          "block_id": "MKT_02",
+          "text": "동일 단지 최근 매매 평균가 2억 6,500만원 (2025.12 기준, 총 3건)",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_LANDLORD",
+      "title": "임대인 추가 조사",
+      "blocks": [
+        {
+          "block_id": "LND_01",
+          "text": "임대인 D 추가 조사 메모 — 최근 3개월간 매입한 5채 모두 매매대금 대비 대출·보증금 비중이 높아 '무자본 갭투자' 정황. 5채 중 4채는 매입 직후 곧바로 신규 세입자와 전세계약을 체결해, 보증금이 다음 매입 자금으로 순환 사용된 것으로 추정됨",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "LND_02",
+          "text": "국세청 홈택스 사업자 조회 결과: 별도 임대사업자 등록 없음",
+          "evidence_pattern": null
+        }
+      ]
+    }
+  ],
+  "hidden_truth": {
+    "fraud_type": "GAP_INVESTMENT_RISK",
+    "risk_patterns": [
+      "RECENT_OWNERSHIP_CHANGE",
+      "MULTIPLE_PROPERTY_ACQUISITION",
+      "HIGH_JEONSE_RATIO"
+    ],
+    "required_evidence": [
+      "MULTIPLE_PROPERTY_ACQUISITION",
+      "HIGH_JEONSE_RATIO"
+    ],
+    "explanation": "임대인이 짧은 기간 여러 채를 연달아 매입한 정황은 '무자본 갭투자'의 전형적인 패턴입니다. 세입자에게 받은 보증금으로 다음 매물을 매입하는 방식이라, 임대인의 자금 사정이 악화되면 여러 세입자가 동시에 보증금을 돌려받지 못하는 사고로 이어질 수 있습니다."
+  },
+  "evidence_definitions": [
+    {
+      "pattern": "RECENT_OWNERSHIP_CHANGE",
+      "importance": 1,
+      "description": "최근 소유권이 변경됨"
+    },
+    {
+      "pattern": "MULTIPLE_PROPERTY_ACQUISITION",
+      "importance": 2,
+      "description": "임대인이 짧은 기간 다수의 부동산을 추가 매입함 (무자본 갭투자 의심)"
+    },
+    {
+      "pattern": "HIGH_JEONSE_RATIO",
+      "importance": 2,
+      "description": "전세금이 주변 시세보다 높음"
+    }
+  ],
+  "investigations": [
+    {
+      "investigation_id": "CHECK_REGISTRY",
+      "name": "등기 정보 확인",
+      "cost": 500,
+      "time_cost": 120,
+      "unlock_condition": null,
+      "document_id": "DOC_REGISTRY"
+    },
+    {
+      "investigation_id": "CHECK_MARKET",
+      "name": "시세 정보 확인",
+      "cost": 300,
+      "time_cost": 90,
+      "unlock_condition": null,
+      "document_id": "DOC_MARKET"
+    },
+    {
+      "investigation_id": "CHECK_LANDLORD",
+      "name": "임대인 추가 조사",
+      "cost": 400,
+      "time_cost": 100,
+      "unlock_condition": {
+        "requires_evidence": "MULTIPLE_PROPERTY_ACQUISITION"
+      },
+      "document_id": "DOC_LANDLORD"
+    }
+  ],
+  "npc_personas": [
+    {
+      "npc_id": "NPC_01",
+      "role": "real_estate_agent",
+      "display_name": "공인중개사 이중개",
+      "knowledge": [
+        "property_information",
+        "landlord_information"
+      ],
+      "strategies": [
+        "SAFETY_CLAIM",
+        "AUTHORITY"
+      ],
+      "pressure_level": 2,
+      "hidden_information": [
+        "landlord_gap_investment"
+      ],
+      "system_prompt": "당신은 부동산 계약 시뮬레이션의 등장인물이다.\n\nROLE: 공인중개사 이중개\n말투: 능숙하고 자신감 있는 존댓말. 경력을 은근히 강조하며 단정적인 어투로 말한다.\n\n다음 사실만 알고 있고 이 범위 밖의 새로운 사실을 만들지 않는다:\n- 매물: 경기 □□시 신축 빌라, 전세금 2억 원\n- 임대인은 최근 3개월간 인근 오피스텔 5채를 추가 매입했다.\n- 주변 평균 전세가는 1억 8천만 원이다.\n\n사용자가 질문하면 실제 중개사처럼 자연스럽게 대답한다. SAFETY_CLAIM(임대인의 자금 여력을 강조), AUTHORITY(오래 일한 경력 강조) 전략 범위 안에서만 행동한다. 임대인이 무자본 갭투자를 하고 있다는 의심은 스스로 먼저 언급하지 않는다.\n\n이 게임의 정답이나 메타 발언을 하지 않는다. 항상 극중 인물로만 대답한다.",
+      "statements": [
+        {
+          "statement_id": "S01",
+          "text": "집주인이 여러 채를 갖고 있어도 자금 여력이 충분해서 안전합니다.",
+          "reveal_keywords": [
+            "집주인",
+            "임대인",
+            "소유자",
+            "여러 채",
+            "여러채",
+            "몇 채",
+            "갭투자",
+            "자금",
+            "여력",
+            "빚",
+            "대출",
+            "안전"
+          ]
+        },
+        {
+          "statement_id": "S02",
+          "text": "전세금은 시세에 맞게 책정된 겁니다.",
+          "reveal_keywords": [
+            "시세",
+            "전세금",
+            "가격",
+            "비싼",
+            "비싸",
+            "얼마",
+            "주변",
+            "실거래",
+            "전세가율"
+          ]
+        }
+      ],
+      "suggested_questions": [
+        "집주인은 어떤 분인가요?",
+        "전세금이 시세에 맞나요?",
+        "보증보험 가입은 가능한가요?"
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "contradiction_id": "C01",
+      "left": "S01",
+      "right": "MULTIPLE_PROPERTY_ACQUISITION",
+      "score": 12,
+      "explanation": "짧은 기간 다수의 부동산을 매입한 것은 세입자 보증금으로 매입 자금을 충당하는 무자본 갭투자일 가능성을 시사한다. '자금 여력이 충분하다'는 설명은 이 정황과 모순된다."
+    },
+    {
+      "contradiction_id": "C02",
+      "left": "S02",
+      "right": "HIGH_JEONSE_RATIO",
+      "score": 10,
+      "explanation": "주변 평균 전세가(1억 8천만 원)보다 이 매물의 전세금(2억 원)이 더 높다. '시세에 맞게 책정됐다'는 설명과 모순된다."
+    }
+  ],
+  "safe_actions": [
+    {
+      "action_id": "STOP_TEMPORARILY",
+      "description": "일단 계약을 보류한다"
+    },
+    {
+      "action_id": "CHECK_REGISTRY",
+      "description": "등기부터 확인한다"
+    },
+    {
+      "action_id": "CHECK_LANDLORD_FINANCE",
+      "description": "임대인의 자금 상황을 확인한다"
+    },
+    {
+      "action_id": "CHECK_MARKET_PRICE",
+      "description": "시세를 확인한다"
+    }
+  ],
+  "ending_options": [
+    {
+      "decision": "SAFE_TO_PROCEED",
+      "score": 4,
+      "comment": "무자본 갭투자 정황을 확인하지 않고 진행하는 것은 위험합니다."
+    },
+    {
+      "decision": "NEED_MORE_VERIFICATION",
+      "score": 15,
+      "comment": "임대인의 자금 상황과 보증보험 가입 여부를 추가로 확인한 뒤 진행하는 것이 안전합니다."
+    },
+    {
+      "decision": "STOP_CONTRACT",
+      "score": 11,
+      "comment": "위험 신호가 겹친다면 계약을 중단하는 것도 안전한 선택입니다."
+    }
+  ],
+  "source": {
+    "case_ids": [
+      "REAL_CASE_GAP_INVESTMENT_009"
+    ],
+    "official_sources": [
+      "https://www.gov.kr 전세사기 예방 안내"
+    ]
+  }
+}

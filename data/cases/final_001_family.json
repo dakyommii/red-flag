@@ -1,0 +1,239 @@
+{
+  "case_id": "FINAL_001",
+  "title": "가족의 계약을 막아라",
+  "domain": "JEONSE",
+  "difficulty": 5,
+  "time_limit_seconds": 1200,
+  "initial_points": 1200,
+  "scenario": {
+    "description": "동생이 오늘 전세 계약을 하겠다고 연락해왔다. \"나 집 구했어. 신축인데 시세보다 싸게 나왔어. 오늘 계약하려고.\" 20분 안에 위험 요소를 확인해 동생을 설득해야 한다.",
+    "property": {
+      "location": "동생이 계약하려는 신축 오피스텔",
+      "price_description": "전세금 1억 8,400만 원",
+      "details": {}
+    },
+    "broker_line": "중개사님이 완전 안전한 매물이라고 몇 번이나 강조하시더라고. 나도 이 정도면 딱히 걸리는 거 없어 보이는데?",
+    "speaker_label": "동생",
+    "goal": "동생이 오늘 계약을 진행해도 되는지, 아니면 막아야 하는지 20분 안에 판단하십시오."
+  },
+  "documents": [
+    {
+      "document_id": "DOC_REGISTRY",
+      "title": "등기 정보",
+      "blocks": [
+        {
+          "block_id": "REG_00",
+          "text": "고유번호 1234-2026-009981 / 소재지: 신축 오피스텔 802호 / 전용면적 29.7㎡",
+          "evidence_pattern": null
+        },
+        {
+          "block_id": "REG_01",
+          "text": "국토교통부 실거래가 조회 — 동일 단지 매매 시세 약 2억원, 동생이 계약하려는 전세금 1억 8,400만원 → 전세가율 약 92% (통상 안전 기준 70% 이하 권고)",
+          "evidence_pattern": "HIGH_JEONSE_RATIO"
+        },
+        {
+          "block_id": "REG_02",
+          "text": "【갑구】 순위 3번 소유권이전 2026.07.02 접수, 등기원인: 매매 — 계약 시점 기준 소유권 취득 불과 약 1개월 전",
+          "evidence_pattern": "RECENT_OWNERSHIP_CHANGE"
+        },
+        {
+          "block_id": "REG_03",
+          "text": "【을구】 순위 1번 근저당권설정 채권최고액 8,000만원, 근저당권자: ○○저축은행 — 전세금과 합산 시 매매가에 근접 또는 초과 가능성",
+          "evidence_pattern": "EXCESSIVE_MORTGAGE"
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_AGENT",
+      "title": "중개사 대응",
+      "blocks": [
+        {
+          "block_id": "AGT_01",
+          "text": "동생과의 통화 메모 — 중개사가 '오늘 계약금 안 넣으시면 다른 손님한테 넘어간다', '이런 매물 지금 아니면 못 구한다'고 반복해서 재촉함",
+          "evidence_pattern": "URGENCY"
+        },
+        {
+          "block_id": "AGT_02",
+          "text": "동생 말로는 중개사가 등기부등본은 '나중에 보여주겠다'며 계약부터 먼저 진행하자고 했다 함",
+          "evidence_pattern": null
+        }
+      ]
+    },
+    {
+      "document_id": "DOC_GUARANTEE",
+      "title": "보증보험 관련 서류",
+      "blocks": [
+        {
+          "block_id": "GUR_01",
+          "text": "HUG(주택도시보증공사) 안심전세포털에서 전세보증금반환보증 가입 가능 여부 조회 시도 — 임대인 정보 불일치로 조회 불가, 중개사에게 요청한 보증 가입 확인서류는 아직 미제공 상태",
+          "evidence_pattern": "VERIFICATION_BLOCK"
+        },
+        {
+          "block_id": "GUR_02",
+          "text": "동생이 보유한 계약서 초안에는 보증보험 관련 특약이 기재되어 있지 않음",
+          "evidence_pattern": null
+        }
+      ]
+    }
+  ],
+  "hidden_truth": {
+    "fraud_type": "COMPOUND_JEONSE_RISK",
+    "risk_patterns": [
+      "HIGH_JEONSE_RATIO",
+      "RECENT_OWNERSHIP_CHANGE",
+      "EXCESSIVE_MORTGAGE",
+      "URGENCY",
+      "VERIFICATION_BLOCK"
+    ],
+    "required_evidence": [
+      "HIGH_JEONSE_RATIO",
+      "EXCESSIVE_MORTGAGE",
+      "VERIFICATION_BLOCK"
+    ],
+    "explanation": "전세가율 92%, 최근 소유권 변경, 근저당권 설정, 보증보험 미확인까지 여러 위험 신호가 동시에 발견된 사례입니다. 이렇게 위험 요소가 겹칠 때는 확신 없이 '사기다'라고 단정하기보다, 오늘 계약을 보류하고 추가로 확인하는 것이 가장 안전한 판단입니다."
+  },
+  "evidence_definitions": [
+    {
+      "pattern": "HIGH_JEONSE_RATIO",
+      "importance": 2,
+      "description": "전세가율 92% — 매매가 대비 전세금 비중이 매우 높음"
+    },
+    {
+      "pattern": "RECENT_OWNERSHIP_CHANGE",
+      "importance": 1,
+      "description": "최근 소유권이 변경됨"
+    },
+    {
+      "pattern": "EXCESSIVE_MORTGAGE",
+      "importance": 2,
+      "description": "근저당권이 설정되어 있어 경매 시 보증금 회수가 어려울 수 있음"
+    },
+    {
+      "pattern": "URGENCY",
+      "importance": 1,
+      "description": "계약을 서두르도록 압박함"
+    },
+    {
+      "pattern": "VERIFICATION_BLOCK",
+      "importance": 2,
+      "description": "보증보험 가입 여부를 확인할 서류가 제공되지 않음"
+    }
+  ],
+  "investigations": [
+    {
+      "investigation_id": "CHECK_REGISTRY",
+      "name": "등기 정보 확인",
+      "cost": 500,
+      "time_cost": 300,
+      "unlock_condition": null,
+      "document_id": "DOC_REGISTRY"
+    },
+    {
+      "investigation_id": "CHECK_AGENT",
+      "name": "중개사 대응 확인",
+      "cost": 200,
+      "time_cost": 180,
+      "unlock_condition": null,
+      "document_id": "DOC_AGENT"
+    },
+    {
+      "investigation_id": "CHECK_GUARANTEE",
+      "name": "보증보험 서류 확인",
+      "cost": 300,
+      "time_cost": 240,
+      "unlock_condition": null,
+      "document_id": "DOC_GUARANTEE"
+    }
+  ],
+  "npc_personas": [
+    {
+      "npc_id": "NPC_01",
+      "role": "sibling",
+      "display_name": "동생",
+      "knowledge": [
+        "broker_claims"
+      ],
+      "strategies": [
+        "SAFETY_CLAIM"
+      ],
+      "pressure_level": 2,
+      "hidden_information": [],
+      "system_prompt": "당신은 부동산 계약 시뮬레이션의 등장인물이다.\n\nROLE: 플레이어의 동생. 오늘 전세 계약을 하려고 하며, 중개사에게 들은 이야기를 그대로 믿고 있다.\n말투: 편한 반말 또는 반존대. 살짝 들뜨고 조급한 톤으로, 형/누나를 안심시키려 하면서도 은근히 방어적이다.\n\n다음 사실만 알고 있고 이 범위 밖의 새로운 사실을 만들지 않는다:\n- 신축이고 시세보다 싸다고 들었다.\n- 중개사가 '완전 안전한 매물'이라고 말했다.\n- 오늘 계약하지 않으면 매물이 사라진다고 들었다.\n- 등기, 근저당, 보증보험에 대해서는 직접 확인해본 적이 없다.\n\nSAFETY_CLAIM(중개사 말을 그대로 믿고 안전하다고 주장) 전략 범위 안에서만 행동한다. 형/누나(플레이어)가 구체적인 근거를 들어 위험을 지적하면 조금씩 흔들리는 반응을 보이되, 스스로 등기부등본 내용 등을 먼저 알려주지는 않는다(직접 확인해본 적이 없으므로).\n\n이 게임의 정답이나 메타 발언을 하지 않는다. 항상 극중 인물(동생)로만 대답한다.",
+      "statements": [
+        {
+          "statement_id": "S01",
+          "text": "중개사가 완전 안전한 매물이라고 했어.",
+          "reveal_keywords": [
+            "중개사",
+            "안전",
+            "확인",
+            "보증보험",
+            "보증",
+            "등기",
+            "근저당",
+            "왜",
+            "괜찮",
+            "믿"
+          ]
+        }
+      ],
+      "suggested_questions": [
+        "중개사가 뭐라고 했어?",
+        "등기부등본은 봤어?",
+        "보증보험은 확인했어?"
+      ]
+    }
+  ],
+  "contradictions": [
+    {
+      "contradiction_id": "C01",
+      "left": "S01",
+      "right": "VERIFICATION_BLOCK",
+      "score": 15,
+      "explanation": "보증보험 가입 여부를 확인할 서류가 제공되지 않았는데 '완전 안전한 매물'이라고 단정하는 것은 근거가 부족하다. 중개사의 주장은 서류로 뒷받침되지 않아 모순된다."
+    }
+  ],
+  "safe_actions": [
+    {
+      "action_id": "STOP_TEMPORARILY",
+      "description": "오늘 계약하지 말고 보류하도록 설득한다"
+    },
+    {
+      "action_id": "CHECK_REGISTRY",
+      "description": "등기부터 확인한다"
+    },
+    {
+      "action_id": "CHECK_GUARANTEE_INSURANCE",
+      "description": "보증보험 가입 여부를 확인한다"
+    },
+    {
+      "action_id": "ASK_SIBLING_TO_WAIT",
+      "description": "동생에게 오늘 계약하지 말라고 설득한다"
+    }
+  ],
+  "ending_options": [
+    {
+      "decision": "SAFE_TO_PROCEED",
+      "score": 3,
+      "comment": "전세가율, 근저당, 보증보험 미확인이 겹친 상태에서 진행하는 것은 매우 위험합니다."
+    },
+    {
+      "decision": "NEED_MORE_VERIFICATION",
+      "score": 15,
+      "comment": "확인되지 않은 위험 요소가 있으므로 오늘 계약하지 말고 추가로 확인하는 것이 가장 안전한 판단입니다."
+    },
+    {
+      "decision": "STOP_CONTRACT",
+      "score": 12,
+      "comment": "'사기다'라고 단정하는 것도 나쁜 선택은 아니지만, 아직 확인이 끝나지 않은 상태에서 성급한 단정일 수 있습니다."
+    }
+  ],
+  "source": {
+    "case_ids": [
+      "REAL_CASE_JEONSE_COMPOUND_030"
+    ],
+    "official_sources": [
+      "https://www.gov.kr 전세사기 예방 안내"
+    ]
+  }
+}
